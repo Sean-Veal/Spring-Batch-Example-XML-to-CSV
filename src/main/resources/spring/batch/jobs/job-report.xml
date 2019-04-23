@@ -1,5 +1,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:task="http://www.springframework.org/schema/task"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -8,7 +9,13 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 	http://www.springframework.org/schema/util
-	http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+	http://www.springframework.org/schema/util/spring-util-3.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+
+    <context:component-scan base-package="com.example" />
 
     <batch:job id="animeJob">
         <batch:step id="step1">
@@ -61,4 +68,11 @@
             </bean>
         </property>
     </bean>
+
+    <bean id="runScheduler" class="com.example.RunScheduler" />
+
+    <!-- Run every 5 seconds -->
+    <task:scheduled-tasks>
+        <task:scheduled ref="runScheduler" method="run" cron="*/5 * * * * *"/>
+    </task:scheduled-tasks>
 </beans>
